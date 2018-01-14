@@ -22,10 +22,16 @@ after_install:
 
 script:
 - |-
+  COLOR_CONTROL="\e["
+  COLOR_RESET="${COLOR_CONTROL}0m"
+  COLOR_BOLD="${COLOR_CONTROL}1m"
+  COLOR_GREEN="${COLOR_BOLD}${COLOR_CONTROL}32m"
+  COLOR_RED="${COLOR_BOLD}${COLOR_CONTROL}31m"
+  COLOR_LIGHT_GREY="${COLOR_RESET}${COLOR_CONTROL}37m"
   fail_flag=0
   for repo in `cat .repos_list`
   do
-    >&2 echo
+    >&2 echo -e $COLOR_LIGHT_GREY
     >&2 echo -n Checking ${repo}... ' '
     travis_yml="https://raw.githubusercontent.com/${repo}/master/.travis.yml"
     curl -s "$travis_yml" | yq '' > /dev/null
@@ -33,18 +39,24 @@ script:
     if [ "$check_result" -eq 0 ]
     then
       status_prefix=
+      >&2 echo -n -e "$COLOR_BOLD$COLOR_GREEN"
     else
       status_prefix='IN'
       fail_flag=1
+      >&2 echo -n -e "$COLOR_RED"
     fi
     >&2 echo [ ${status_prefix}VALID ]
   done
-  >&2 echo
+  >&2 echo -e "$COLOR_LIGHT_GREY"
   >&2 echo Repos checked.
   if [ "$fail_flag" -eq 0 ]
   then
+    >&2 echo -n -e "$COLOR_GREEN"
     >&2 echo All repos have valid configs.
+    >&2 echo -n -e "$COLOR_RESET"
   else
+    >&2 echo -n -e "$COLOR_RED"
     >&2 echo At least one repo has invalid YAML markup in .travis.yml in master
+    >&2 echo -n -e "$COLOR_RESET"
     exit $fail_flag
   fi
