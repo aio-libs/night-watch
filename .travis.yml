@@ -7,6 +7,9 @@ env:
   global:
   - GH_ORG=aio-libs
 
+before_install:
+- >-
+  echo Fetching https://api.github.com/orgs/${GH_ORG}/repos?per_page=9999
 install:
 - pip install yq
 - >-
