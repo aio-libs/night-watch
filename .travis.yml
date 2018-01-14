@@ -1,0 +1,13 @@
+sudo: false
+
+language: generic
+
+env:
+  global:
+  - GH_ORG=aio-libs
+
+install:
+- curl -s https://api.github.com/orgs/${GH_ORG}/repos?per_page=9999 | ruby -rubygems -e 'require "json"; JSON.load(STDIN.read).each { |repo| %x[git clone --depth=1 --branch=master #{repo["git_url"]} ]}'
+
+script:
+- skip
