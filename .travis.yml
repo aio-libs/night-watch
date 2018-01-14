@@ -13,10 +13,10 @@ cache: pip
 before_install:
 - envsubst < .netrc.tmpl > .netrc
 - unset GH_TOKEN
+- >-
+  curl --netrc-file .netrc -s https://api.github.com/user | jq -r '"Logged in as @" + .login + " (" + .name + ")."'
 install:
 - pip install yq
-- >-
-  curl --netrc-file .netrc -s https://api.github.com/orgs/${GH_ORG}/repos?per_page=9999
 - >-
   curl --netrc-file .netrc -s https://api.github.com/orgs/${GH_ORG}/repos?per_page=9999 | jq -r '.[].full_name' > .repos_list
 after_install:
