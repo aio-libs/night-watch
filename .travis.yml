@@ -7,6 +7,7 @@ env:
   - GH_ORG=aio-libs
 
 install:
+- pip install yq
 - >-
   curl -s https://api.github.com/orgs/${GH_ORG}/repos?per_page=9999 | jq '.[].full_name' > .repos_list
 after_install:
