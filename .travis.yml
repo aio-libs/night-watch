@@ -8,7 +8,7 @@ env:
 
 install:
 - >-
-  curl -s https://api.github.com/orgs/${GH_ORG}/repos?per_page=9999 | jq '.[].full_name' > .repos_list
+  curl -s https://api.github.com/orgs/${GH_ORG}/repos?per_page=9999 | tee | jq '.[].full_name' > .repos_list
 
 script:
 - skip
