@@ -16,4 +16,28 @@ after_install:
 - cat .repos_list
 
 script:
-- skip
+- |-
+  fail_flag=0
+  for repo in `cat .repos_list`
+  do
+    >&2 echo
+    >&2 echo -n Checking ${repo}... ' '
+    travis_yml="https://raw.githubusercontent.com/${repo}/master/.travis.yml"
+    curl -s | yq ''
+    check_result=$?
+    if [ $check_result -eq 0 ]
+      status_prefix=
+    then
+      status_prefix='IN'
+      fail_flag=1
+    fi
+    >&2 echo '[ ' ${status_prefix}VALID ' ]'
+  done
+  >&2 echo
+  >&2 echo Repos checked.
+  if [ $fail_flag -eq 0 ]
+  then
+    >&2 echo All repos have valid configs.
+  else
+    >&2 echo At least one repo has invalid YAML markup in .travis.yml in master
+  fi
