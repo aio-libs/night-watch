@@ -41,4 +41,5 @@ script:
     >&2 echo All repos have valid configs.
   else
     >&2 echo At least one repo has invalid YAML markup in .travis.yml in master
+    exit $fail_flag
   fi
