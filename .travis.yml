@@ -23,19 +23,20 @@ script:
     >&2 echo
     >&2 echo -n Checking ${repo}... ' '
     travis_yml="https://raw.githubusercontent.com/${repo}/master/.travis.yml"
-    curl -s | yq ''
+    curl -s "$travis_yml" | yq '' > /dev/null
     check_result=$?
-    if [ $check_result -eq 0 ]
-      status_prefix=
+    if [ "$check_result" -eq 0 ]
     then
+      status_prefix=
+    else
       status_prefix='IN'
       fail_flag=1
     fi
-    >&2 echo '[ ' ${status_prefix}VALID ' ]'
+    >&2 echo [ ${status_prefix}VALID ]
   done
   >&2 echo
   >&2 echo Repos checked.
-  if [ $fail_flag -eq 0 ]
+  if [ "$fail_flag" -eq 0 ]
   then
     >&2 echo All repos have valid configs.
   else
