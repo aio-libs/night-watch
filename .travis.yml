@@ -17,7 +17,7 @@ before_install:
 - >-
   curl --netrc-file .netrc -s https://api.github.com/user | jq -r '"Logged in as @" + .login + " (" + .name + ")."'
 install:
-- pip install yq
+- python -m pip install yq
 - >-
   curl --netrc-file .netrc -s https://api.github.com/orgs/${GH_ORG}/repos?per_page=9999 | jq -r '.[].full_name' > .repos_list
 after_install:
@@ -37,7 +37,7 @@ script:
     >&2 echo -e $COLOR_LIGHT_GREY
     >&2 echo -n Checking ${repo}... ' '
     travis_yml="https://raw.githubusercontent.com/${repo}/master/.travis.yml"
-    curl -s "$travis_yml" | yq '' > /dev/null
+    curl -s "$travis_yml" | python -m yq '' > /dev/null
     check_result=$?
     if [ "$check_result" -eq 0 ]
     then
