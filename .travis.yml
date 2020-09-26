@@ -17,7 +17,7 @@ before_install:
 - >-
   curl --netrc-file .netrc -s https://api.github.com/user | jq -r '"Logged in as @" + .login + " (" + .name + ")."'
 install:
-- python -m pip install yq
+- python -m pip install 'yq < 2.11.0'
 - >-
   curl --netrc-file .netrc -s https://api.github.com/orgs/${GH_ORG}/repos?per_page=9999 | jq -r '.[].full_name' > .repos_list
 after_install:
