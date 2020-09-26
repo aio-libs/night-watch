@@ -37,7 +37,7 @@ script:
     >&2 echo -e $COLOR_LIGHT_GREY
     >&2 echo -n Checking ${repo}... ' '
     travis_yml="https://raw.githubusercontent.com/${repo}/master/.travis.yml"
-    curl -s "$travis_yml" | python -m yq '' > /dev/null
+    curl -s "$travis_yml" | yq '' > /dev/null
     check_result=$?
     if [ "$check_result" -eq 0 ]
     then
